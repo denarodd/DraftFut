@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DraftFut - Montar Time</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-top">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 4a4 4 0 010 8"/></svg>
+                </div>
+                <span class="logo-text">DraftFut</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span>Painel</span>
+                </a>
+                <a href="montar-time.html" class="nav-item active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <span>Montar Time</span>
+                </a>
+                <a href="pontos.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    <span>Pontos</span>
+                </a>
+                <a href="ranking.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+                    <span>Ranking</span>
+                </a>
+                <a href="ligas.html" class="nav-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4a4 4 0 010 8"/><circle cx="9" cy="8" r="4"/><path d="M1 20v-2a4 4 0 014-4h8a4 4 0 014 4v2"/></svg>
+                    <span>Ligas</span>
+                </a>
+            </nav>
+        </div>
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-item logout" onclick="alert('Voce saiu da conta!'); return false;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="welcome-text">Monte Seu Time</h1>
+            <p class="team-subtitle">Selecione 11 jogadores para criar o seu time dos sonhos</p>
+        </div>
+
+        <div class="build-team-layout">
+            <!-- Campo -->
+            <div class="pitch-container">
+                <div class="pitch-header">
+                    <div class="formation-info">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+                        <span>Formação:</span>
+                        <select id="formationSelect" onchange="changeFormation()">
+                            <option value="4-4-2">4-4-2</option>
+                            <option value="4-3-3">4-3-3</option>
+                            <option value="3-5-2">3-5-2</option>
+                            <option value="4-2-3-1">4-2-3-1</option>
+                            <option value="3-4-3">3-4-3</option>
+                            <option value="5-3-2">5-3-2</option>
+                            <option value="4-1-4-1">4-1-4-1</option>
+                        </select>
+                    </div>
+                    <div class="player-count" id="playerCount">0/11 Jogadores</div>
+                </div>
+                <div class="pitch-field" id="pitchField">
+                    <!-- Renderizado via JS -->
+                </div>
+            </div>
+
+            <!-- Painel Lateral -->
+            <div class="player-panel">
+                <div class="panel-section">
+                    <h3 class="panel-title">Seleção de Jogadores</h3>
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="searchInput" placeholder="Buscar jogadores..." oninput="renderPlayerList()">
+                    </div>
+                    <div class="filter-selects">
+                        <div class="custom-select">
+                            <select id="positionFilter" onchange="renderPlayerList()">
+                                <option value="">Todas as Posições</option>
+                                <option value="GOL">Goleiro</option>
+                                <option value="DEF">Defensor</option>
+                                <option value="MEI">Meio-campista</option>
+                                <option value="ATA">Atacante</option>
+                            </select>
+                        </div>
+                        <div class="custom-select">
+                            <select id="teamFilter" onchange="renderPlayerList()">
+                                <option value="">Todos os Times</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="player-list" id="playerList"></div>
+                </div>
+
+                <div class="panel-section team-stats">
+                    <h3 class="panel-title">Estatísticas do Time</h3>
+                    <div class="stat-row"><span>Valor Total:</span><span class="stat-val" id="totalValue">£0M</span></div>
+                    <div class="stat-row"><span>Pontos Totais:</span><span class="stat-val green-text" id="totalPoints">0</span></div>
+                    <div class="stat-row"><span>Orçamento Restante:</span><span class="stat-val" id="budgetRemaining">£100M</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<script>
+// ========== BANCO DE JOGADORES ==========
+const allPlayers = [
+    // Goleiros
+    { id: 1, name: "Alisson Becker", initials: "AB", pos: "GOL", team: "Liverpool", price: 5.5, pts: 145 },
+    { id: 2, name: "Ederson Moraes", initials: "EM", pos: "GOL", team: "Man City", price: 5.0, pts: 140 },
+    { id: 3, name: "David Raya", initials: "DR", pos: "GOL", team: "Arsenal", price: 4.5, pts: 130 },
+    { id: 4, name: "Nick Pope", initials: "NP", pos: "GOL", team: "Newcastle", price: 4.0, pts: 120 },
+    { id: 5, name: "Andre Onana", initials: "AO", pos: "GOL", team: "Man Utd", price: 4.5, pts: 115 },
+    { id: 6, name: "Robert Sanchez", initials: "RS", pos: "GOL", team: "Chelsea", price: 4.0, pts: 105 },
+    // Defensores
+    { id: 7, name: "Trent Alexander-Arnold", initials: "TA", pos: "DEF", team: "Liverpool", price: 7.0, pts: 170 },
+    { id: 8, name: "Kyle Walker", initials: "KW", pos: "DEF", team: "Man City", price: 5.5, pts: 130 },
+    { id: 9, name: "William Saliba", initials: "WS", pos: "DEF", team: "Arsenal", price: 6.0, pts: 155 },
+    { id: 10, name: "Virgil van Dijk", initials: "VD", pos: "DEF", team: "Liverpool", price: 6.5, pts: 160 },
+    { id: 11, name: "Ruben Dias", initials: "RD", pos: "DEF", team: "Man City", price: 6.0, pts: 145 },
+    { id: 12, name: "Gabriel Magalhaes", initials: "GM", pos: "DEF", team: "Arsenal", price: 5.5, pts: 140 },
+    { id: 13, name: "Lisandro Martinez", initials: "LM", pos: "DEF", team: "Man Utd", price: 5.0, pts: 125 },
+    { id: 14, name: "Josko Gvardiol", initials: "JG", pos: "DEF", team: "Man City", price: 5.5, pts: 135 },
+    { id: 15, name: "Ben White", initials: "BW", pos: "DEF", team: "Arsenal", price: 5.5, pts: 140 },
+    { id: 16, name: "Kieran Trippier", initials: "KT", pos: "DEF", team: "Newcastle", price: 5.0, pts: 120 },
+    { id: 17, name: "Reece James", initials: "RJ", pos: "DEF", team: "Chelsea", price: 5.5, pts: 110 },
+    { id: 18, name: "Andrew Robertson", initials: "AR", pos: "DEF", team: "Liverpool", price: 6.0, pts: 138 },
+    // Meio-campistas
+    { id: 19, name: "Mohamed Salah", initials: "MS", pos: "MEI", team: "Liverpool", price: 13.0, pts: 240 },
+    { id: 20, name: "Bukayo Saka", initials: "BS", pos: "MEI", team: "Arsenal", price: 10.0, pts: 210 },
+    { id: 21, name: "Kevin De Bruyne", initials: "KB", pos: "MEI", team: "Man City", price: 10.5, pts: 200 },
+    { id: 22, name: "Bruno Fernandes", initials: "BF", pos: "MEI", team: "Man Utd", price: 9.0, pts: 185 },
+    { id: 23, name: "Phil Foden", initials: "PF", pos: "MEI", team: "Man City", price: 9.5, pts: 195 },
+    { id: 24, name: "Martin Odegaard", initials: "MO", pos: "MEI", team: "Arsenal", price: 8.5, pts: 180 },
+    { id: 25, name: "Cole Palmer", initials: "CP", pos: "MEI", team: "Chelsea", price: 8.0, pts: 190 },
+    { id: 26, name: "Bernardo Silva", initials: "BI", pos: "MEI", team: "Man City", price: 7.5, pts: 160 },
+    { id: 27, name: "Declan Rice", initials: "DC", pos: "MEI", team: "Arsenal", price: 6.5, pts: 145 },
+    { id: 28, name: "Alexis Mac Allister", initials: "AM", pos: "MEI", team: "Liverpool", price: 6.5, pts: 150 },
+    { id: 29, name: "Joelinton Silva", initials: "JS", pos: "MEI", team: "Newcastle", price: 6.0, pts: 130 },
+    { id: 30, name: "Enzo Fernandez", initials: "EF", pos: "MEI", team: "Chelsea", price: 6.5, pts: 125 },
+    { id: 31, name: "Rodrigo Hernandez", initials: "RH", pos: "MEI", team: "Man City", price: 6.0, pts: 140 },
+    { id: 32, name: "James Maddison", initials: "JM", pos: "MEI", team: "Tottenham", price: 7.0, pts: 155 },
+    // Atacantes
+    { id: 33, name: "Erling Haaland", initials: "EH", pos: "ATA", team: "Man City", price: 14.0, pts: 250 },
+    { id: 34, name: "Harry Kane", initials: "HK", pos: "ATA", team: "Bayern Munich", price: 11.5, pts: 220 },
+    { id: 35, name: "Alexander Isak", initials: "AI", pos: "ATA", team: "Newcastle", price: 8.5, pts: 185 },
+    { id: 36, name: "Ollie Watkins", initials: "OW", pos: "ATA", team: "Aston Villa", price: 8.0, pts: 175 },
+    { id: 37, name: "Darwin Nunez", initials: "DN", pos: "ATA", team: "Liverpool", price: 7.5, pts: 155 },
+    { id: 38, name: "Nicolas Jackson", initials: "NJ", pos: "ATA", team: "Chelsea", price: 7.0, pts: 150 },
+    { id: 39, name: "Gabriel Jesus", initials: "GJ", pos: "ATA", team: "Arsenal", price: 7.5, pts: 145 },
+    { id: 40, name: "Dominic Solanke", initials: "DS", pos: "ATA", team: "Tottenham", price: 7.0, pts: 140 },
+    { id: 41, name: "Richarlison Andrade", initials: "RA", pos: "ATA", team: "Tottenham", price: 6.5, pts: 120 },
+    { id: 42, name: "Ivan Toney", initials: "IT", pos: "ATA", team: "Brentford", price: 7.0, pts: 135 },
+];
+
+// ========== FORMACOES ==========
+const formations = {
+    "4-4-2": { DEF: 4, MEI: 4, ATA: 2 },
+    "4-3-3": { DEF: 4, MEI: 3, ATA: 3 },
+    "3-5-2": { DEF: 3, MEI: 5, ATA: 2 },
+    "4-2-3-1": { DEF: 4, MEI: 5, ATA: 1 },
+    "3-4-3": { DEF: 3, MEI: 4, ATA: 3 },
+    "5-3-2": { DEF: 5, MEI: 3, ATA: 2 },
+    "4-1-4-1": { DEF: 4, MEI: 5, ATA: 1 },
+};
+
+const BUDGET = 100; // milhoes
+let currentFormation = "4-4-2";
+let squad = []; // ids dos jogadores selecionados
+
+// ========== INICIALIZACAO ==========
+window.onload = function() {
+    // Carregar estado salvo
+    const saved = localStorage.getItem("draftfut_squad");
+    const savedFormation = localStorage.getItem("draftfut_formation");
+    if (saved) squad = JSON.parse(saved);
+    if (savedFormation) {
+        currentFormation = savedFormation;
+        document.getElementById("formationSelect").value = currentFormation;
+    }
+
+    populateTeamFilter();
+    renderPitch();
+    renderPlayerList();
+    updateStats();
+};
+
+function saveState() {
+    localStorage.setItem("draftfut_squad", JSON.stringify(squad));
+    localStorage.setItem("draftfut_formation", currentFormation);
+}
+
+// ========== FILTRO DE TIMES ==========
+function populateTeamFilter() {
+    const teams = [...new Set(allPlayers.map(p => p.team))].sort();
+    const sel = document.getElementById("teamFilter");
+    teams.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        sel.appendChild(opt);
+    });
+}
+
+// ========== TROCAR FORMACAO ==========
+function changeFormation() {
+    const newFormation = document.getElementById("formationSelect").value;
+    const f = formations[newFormation];
+
+    // Contar jogadores por posicao no elenco atual
+    const counts = { GOL: 0, DEF: 0, MEI: 0, ATA: 0 };
+    squad.forEach(id => {
+        const p = allPlayers.find(x => x.id === id);
+        if (p) counts[p.pos]++;
+    });
+
+    // Verificar se o elenco cabe na nova formacao
+    if (counts.DEF > f.DEF || counts.MEI > f.MEI || counts.ATA > f.ATA) {
+        // Remover jogadores excedentes automaticamente
+        const newSquad = [];
+        const newCounts = { GOL: 0, DEF: 0, MEI: 0, ATA: 0 };
+        const maxByPos = { GOL: 1, DEF: f.DEF, MEI: f.MEI, ATA: f.ATA };
+        squad.forEach(id => {
+            const p = allPlayers.find(x => x.id === id);
+            if (p && newCounts[p.pos] < maxByPos[p.pos]) {
+                newCounts[p.pos]++;
+                newSquad.push(id);
+            }
+        });
+        squad = newSquad;
+    }
+
+    currentFormation = newFormation;
+    saveState();
+    renderPitch();
+    renderPlayerList();
+    updateStats();
+}
+
+// ========== RENDERIZAR CAMPO ==========
+function renderPitch() {
+    const field = document.getElementById("pitchField");
+    const f = formations[currentFormation];
+    const squadPlayers = squad.map(id => allPlayers.find(p => p.id === id));
+
+    const gk = squadPlayers.filter(p => p && p.pos === "GOL");
+    const defs = squadPlayers.filter(p => p && p.pos === "DEF");
+    const mids = squadPlayers.filter(p => p && p.pos === "MEI");
+    const fwds = squadPlayers.filter(p => p && p.pos === "ATA");
+
+    function makeSlot(player) {
+        if (player) {
+            return `<div class="player-slot" onclick="removePlayer(${player.id})" title="Clique para remover">
+                <div class="player-circle">${player.initials}</div>
+                <div class="player-name">${player.name.split(" ").pop()}</div>
+                <div class="player-team-label">${player.team}</div>
+            </div>`;
+        }
+        return `<div class="player-slot empty-slot">
+            <div class="player-circle empty">+</div>
+            <div class="player-name">Vazio</div>
+            <div class="player-team-label">-</div>
+        </div>`;
+    }
+
+    function makeRow(players, max, cssClass) {
+        let slots = "";
+        for (let i = 0; i < max; i++) {
+            slots += makeSlot(players[i] || null);
+        }
+        return `<div class="pitch-row ${cssClass}">${slots}</div>`;
+    }
+
+    // Determinar classes de gap baseado no numero de jogadores na linha
+    let fwdClass = "forwards";
+    let midClass = "midfielders";
+    let defClass = "defenders";
+
+    field.innerHTML =
+        makeRow(fwds, f.ATA, fwdClass) +
+        makeRow(mids, f.MEI, midClass) +
+        makeRow(defs, f.DEF, defClass) +
+        makeRow(gk, 1, "goalkeeper");
+
+    // Atualizar contagem
+    document.getElementById("playerCount").textContent = `${squad.length}/11 Jogadores`;
+}
+
+// ========== RENDERIZAR LISTA DE JOGADORES ==========
+function renderPlayerList() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const posFilter = document.getElementById("positionFilter").value;
+    const teamFilter = document.getElementById("teamFilter").value;
+    const list = document.getElementById("playerList");
+
+    const posLabels = { GOL: "GOL", DEF: "DEF", MEI: "MEI", ATA: "ATA" };
+    const f = formations[currentFormation];
+    const maxByPos = { GOL: 1, DEF: f.DEF, MEI: f.MEI, ATA: f.ATA };
+
+    // Contar jogadores por posicao no elenco
+    const counts = { GOL: 0, DEF: 0, MEI: 0, ATA: 0 };
+    squad.forEach(id => {
+        const p = allPlayers.find(x => x.id === id);
+        if (p) counts[p.pos]++;
+    });
+
+    let filtered = allPlayers.filter(p => {
+        if (search && !p.name.toLowerCase().includes(search)) return false;
+        if (posFilter && p.pos !== posFilter) return false;
+        if (teamFilter && p.team !== teamFilter) return false;
+        return true;
+    });
+
+    // Ordenar: selecionados primeiro, depois por pontos
+    filtered.sort((a, b) => {
+        const aSelected = squad.includes(a.id);
+        const bSelected = squad.includes(b.id);
+        if (aSelected && !bSelected) return -1;
+        if (!aSelected && bSelected) return 1;
+        return b.pts - a.pts;
+    });
+
+    let html = "";
+    filtered.forEach(p => {
+        const isSelected = squad.includes(p.id);
+        const posFull = counts[p.pos] >= maxByPos[p.pos] && !isSelected;
+
+        html += `<div class="player-item ${isSelected ? 'selected' : ''}">
+            <div class="player-item-info">
+                <span class="player-item-name">${p.name}</span>
+                <div class="player-item-meta">
+                    <span class="position-badge">${posLabels[p.pos]}</span>
+                    <span class="player-item-team">${p.team}</span>
+                </div>
+                <span class="player-item-price">£${p.price}M &bull; ${p.pts} pts</span>
+            </div>
+            ${isSelected
+                ? `<button class="btn-remove" onclick="removePlayer(${p.id})" title="Remover">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>`
+                : `<button class="btn-add ${posFull ? 'btn-disabled' : ''}" onclick="${posFull ? '' : 'addPlayer(' + p.id + ')'}" title="${posFull ? 'Posição cheia' : 'Adicionar'}" ${posFull ? 'disabled' : ''}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>`
+            }
+        </div>`;
+    });
+
+    if (filtered.length === 0) {
+        html = '<div class="empty-list">Nenhum jogador encontrado</div>';
+    }
+
+    list.innerHTML = html;
+}
+
+// ========== ADICIONAR / REMOVER JOGADOR ==========
+function addPlayer(id) {
+    if (squad.includes(id)) return;
+    if (squad.length >= 11) {
+        showToast("O time ja esta completo! Remova um jogador antes.");
+        return;
+    }
+
+    const player = allPlayers.find(p => p.id === id);
+    const f = formations[currentFormation];
+    const maxByPos = { GOL: 1, DEF: f.DEF, MEI: f.MEI, ATA: f.ATA };
+
+    // Contar jogadores por posicao
+    const counts = { GOL: 0, DEF: 0, MEI: 0, ATA: 0 };
+    squad.forEach(sid => {
+        const p = allPlayers.find(x => x.id === sid);
+        if (p) counts[p.pos]++;
+    });
+
+    if (counts[player.pos] >= maxByPos[player.pos]) {
+        showToast(`Ja tem o maximo de jogadores nessa posicao (${maxByPos[player.pos]})!`);
+        return;
+    }
+
+    // Verificar orcamento
+    const currentSpending = squad.reduce((sum, sid) => {
+        const p = allPlayers.find(x => x.id === sid);
+        return sum + (p ? p.price : 0);
+    }, 0);
+    if (currentSpending + player.price > BUDGET) {
+        showToast("Orcamento insuficiente!");
+        return;
+    }
+
+    squad.push(id);
+    saveState();
+    renderPitch();
+    renderPlayerList();
+    updateStats();
+}
+
+function removePlayer(id) {
+    squad = squad.filter(sid => sid !== id);
+    saveState();
+    renderPitch();
+    renderPlayerList();
+    updateStats();
+}
+
+// ========== ATUALIZAR ESTATISTICAS ==========
+function updateStats() {
+    const totalPrice = squad.reduce((sum, id) => {
+        const p = allPlayers.find(x => x.id === id);
+        return sum + (p ? p.price : 0);
+    }, 0);
+    const totalPts = squad.reduce((sum, id) => {
+        const p = allPlayers.find(x => x.id === id);
+        return sum + (p ? p.pts : 0);
+    }, 0);
+    const remaining = BUDGET - totalPrice;
+
+    document.getElementById("totalValue").textContent = `£${totalPrice.toFixed(1)}M`;
+    document.getElementById("totalPoints").textContent = totalPts;
+
+    const budgetEl = document.getElementById("budgetRemaining");
+    budgetEl.textContent = `£${remaining.toFixed(1)}M`;
+    budgetEl.className = remaining >= 0 ? "stat-val green-text" : "stat-val red-text";
+}
+
+// ========== TOAST ==========
+function showToast(msg) {
+    let toast = document.getElementById("toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.className = "toast show";
+    setTimeout(() => { toast.className = "toast"; }, 2500);
+}
+</script>
+</body>
+</html>
